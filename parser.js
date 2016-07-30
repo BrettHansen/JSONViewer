@@ -29,54 +29,57 @@ function testJSON(e) {
   try {
     data = JSON.parse(e.target.result);
     var viewer = $("#viewer");
-    var elements = parseJSON(data);
+    var elements = parseJSON(data, 0);
+    viewer.append(elements);
     console.log(elements);
-    viewer.append(parseJSON(data));
   } catch(e) {
     console.log("Not a valid json.");
   }
 }
 
-function parseJSON(data) {
+function parseJSON(data, iter) {
   elements = [];
   for(var key in data) {
-    if(isObject(data[key]))
-      elements.push(parseArray(data[key], key));
-    else if($.isArray(data[key]))
-      elements.push(parseObject(data[key], key));
+    if($.isArray(data[key])) {
+      var ret = parseArray(data[key], key);
+      console.log(ret);
+      elements.push(ret);
+    }
+    else if(isObject(data[key])) {
+      var ret = parseObject(data[key], key);
+      console.log(ret);
+      elements.push(ret);
+    }
     else {
-      elements.push(parsePrimitive(data[key], key));
+      var ret = parsePrimitive(data[key], key);
+      console.log(ret);
+      elements.push(ret);
     }
   }
   return elements;
 }
 
 function parseObject(value, key) {
-  var div = $("<div class=\"object\"></div>");
-  var elements = parseJSON(value);
-  div.append($("<span class=\"key\"></span>").text(key));
-  for(var i in elements) {
-    div.append($("<span class=\"element\"></span>").text());
+  var str = key + " : <br>";
+  var parsed = parseJSON(value);
+  for(var i in parsed) {
+    str += parsed[i] + "<br>";
   }
-  return div;
+  return str;
 }
 
 function parseArray(value, key) {
-  var div = $("<div class=\"array\"></div>");
-  var elements = parseJSON(value);
-  div.append($("<span class=\"key\"></span>").text(key));
-  for(var i in elements) {
-    div.append($("<span class=\"element\"></span>").text());
+  var str = key + " : <br>";
+  var parsed = parseJSON(value);
+  for(var i in parsed) {
+    str += parsed[i] + ", ";
   }
-  return div;
+  return str;
 }
 
 function parsePrimitive(value, key) {
-  var div = $("<div class=\"primitive\"></div>");
-  var span1 = $("<span class=\"key\"></span>").text(key);
-  var span2 = $("<span class=\"value\"></span>").text(value);
-  div.append(span1).append(span2);
-  return div;
+  var str = key + " : " + value;
+  return str;
 }
 
 function isObject(obj) {

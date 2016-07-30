@@ -25,3 +25,8 @@ body, html {
 .dragging-over {
 	border-color: black !important;
 }
+
+.split {
+	height: 10px;
+	background: gray;
+}
