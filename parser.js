@@ -20,7 +20,7 @@ $("#drop").on('drag dragstart dragend dragover dragenter dragleave drop', functi
 
   var reader = new FileReader();
 
-  reader.onload(parseJSON(e));
+  reader.onload = parseJSON;
   reader.readAsBinaryString(files[0]);
 });
 
