@@ -26,5 +26,10 @@ $("#drop").on('drag dragstart dragend dragover dragenter dragleave drop', functi
 
 function parseJSON(e) {
   var data = e.target.result;
-  console.log(data);
+  try {
+    JSON.parse(data);
+    console.log(data);
+  } catch(e) {
+    console.log("Not a valid json.");
+  }
 }
