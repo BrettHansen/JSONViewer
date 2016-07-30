@@ -1,0 +1,24 @@
+var totalFiles = 0;
+var output_vals = [];
+var files = [];
+$("#drop").on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+})
+.on('dragenter', function(e) {
+  $("#drop").addClass("dragging-over");
+  $("#drop").removeClass("not-dragging-over");
+})
+.on('dragleave', function(e) {
+  $("#drop").addClass("not-dragging-over");
+  $("#drop").removeClass("dragging-over");
+})
+.on('drop', function(e) {
+  $("#drop").remove();
+  files = e.originalEvent.dataTransfer.files;
+  files = Object.keys(files).map(function (key) {return files[key]});
+
+  $.getJSON(files[0].name, function(data) {
+    console.log(data);
+  });
+});
