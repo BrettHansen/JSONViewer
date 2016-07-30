@@ -18,7 +18,7 @@ $("#drop").on('drag dragstart dragend dragover dragenter dragleave drop', functi
   files = e.originalEvent.dataTransfer.files;
   files = Object.keys(files).map(function (key) {return files[key]});
 
-  var reader = new fileReader();
+  var reader = new FileReader();
 
   reader.onload(parseJSON(e));
   reader.readAsBinaryString(files[0]);
