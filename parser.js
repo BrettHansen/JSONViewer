@@ -18,7 +18,13 @@ $("#drop").on('drag dragstart dragend dragover dragenter dragleave drop', functi
   files = e.originalEvent.dataTransfer.files;
   files = Object.keys(files).map(function (key) {return files[key]});
 
-  $.getJSON(files[0].name, function(data) {
-    console.log(data);
-  });
+  var reader = new fileReader();
+
+  reader.onload(parseJSON(e));
+  reader.readAsBinaryString(files[0]);
 });
+
+function parseJSON(e) {
+  var data = e.target.result;
+  console.log(data);
+}
