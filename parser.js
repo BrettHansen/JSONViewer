@@ -29,30 +29,26 @@ function testJSON(e) {
   try {
     data = JSON.parse(e.target.result);
     var viewer = $("#viewer");
-    var elements = parseJSON(data, 0);
+    var elements = parseObject(data);
     viewer.append(elements);
-    console.log(elements);
   } catch(e) {
     console.log("Not a valid json.");
   }
 }
 
-function parseJSON(data, iter) {
-  elements = [];
+function parseList(data, surpressKey) {
+  var elements = [];
   for(var key in data) {
     if($.isArray(data[key])) {
-      var ret = parseArray(data[key], key);
-      console.log(ret);
+      var ret = parseArray(data[key], surpressKey ? undefined : key);
       elements.push(ret);
     }
     else if(isObject(data[key])) {
-      var ret = parseObject(data[key], key);
-      console.log(ret);
+      var ret = parseObject(data[key], surpressKey ? undefined : key);
       elements.push(ret);
     }
     else {
-      var ret = parsePrimitive(data[key], key);
-      console.log(ret);
+      var ret = parsePrimitive(data[key], surpressKey ? undefined : key);
       elements.push(ret);
     }
   }
@@ -60,26 +56,34 @@ function parseJSON(data, iter) {
 }
 
 function parseObject(value, key) {
-  var str = key + " : <br>";
-  var parsed = parseJSON(value);
+  var div = $("<div class=\"object\">" + (key ? "<span class=\"key\">" + key + "</span>" : "") + "</div>");
+  var parsed = parseList(value);
   for(var i in parsed) {
-    str += parsed[i] + "<br>";
+    div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
   }
-  return str;
+  return div;
 }
 
 function parseArray(value, key) {
-  var str = key + " : <br>";
-  var parsed = parseJSON(value);
+  var div = $("<div class=\"array\">" + (key ? "<span class=\"key\">" + key + "</span>" : "") + "</div>");
+  var parsed = parseList(value, true);
   for(var i in parsed) {
-    str += parsed[i] + ", ";
+    div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].array);
   }
-  return str;
+  return div;
 }
 
 function parsePrimitive(value, key) {
-  var str = key + " : " + value;
-  return str;
+  var obj = {
+    "key" : key,
+    "value" : value
+  }
+
+  obj.object = $("<div class=\"primitive\">" +
+                (key ? "<span class=\"key\">" + key + "</span>" : "") +
+                "<span class=\"value\">" + value + "</span></div>");
+  obj.array = $("<div class=\"primitive\"><span class=\"arr_element\">" + value + "</span></div>");
+  return obj;
 }
 
 function isObject(obj) {
