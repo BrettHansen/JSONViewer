@@ -1,16 +1,13 @@
 body, html {
 	padding: 0;
 	margin: 0;
-	width: 100%;
-	height: 100%;
 	text-align: left;
 }
 
 #drop {
-	margin: 45px;
-	padding: 0;
-	width: calc(100% - 100px);
-	height: calc(100% - 100px);
+	margin: 50px auto;
+	width: 800px;
+	height: 500px;
 	text-align: center;
     display: flex;
     justify-content: center;
@@ -23,12 +20,12 @@ body, html {
 	border-color: black !important;
 }
 
-div.object, div.array {
+div.object, div.array, div.primitive {
 	position: relative;
 	left: 20px;
 	padding-left: 5px;
 	border-left: 1px dotted gray;
-	width: 100%;
+	clear: both;
 }
 
 span.key {
@@ -36,6 +33,6 @@ span.key {
 }
 
 span.value, span.arr_element {
-	text-align: right;
+	padding-left: 20px;
 }
 
