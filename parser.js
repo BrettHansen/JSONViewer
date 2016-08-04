@@ -28,12 +28,13 @@ $("#drop").on('drag dragstart dragend dragover dragenter dragleave drop', functi
 function testJSON(e) {
   try {
     data = JSON.parse(e.target.result);
-    var viewer = $("#viewer");
-    var elements = parseObject(data);
-    viewer.append(elements);
   } catch(e) {
     console.log("Not a valid json.");
+    return;
   }
+  var viewer = $("#viewer");
+  var elements = parseObject(data, files[0].name);
+  viewer.append(elements);
 }
 
 function parseList(data, surpressKey) {
@@ -57,19 +58,35 @@ function parseList(data, surpressKey) {
 
 function parseObject(value, key) {
   var div = $("<div class=\"object\">" + (key ? "<span class=\"key\">" + key + "</span>" : "") + "</div>");
-  var parsed = parseList(value);
-  for(var i in parsed) {
-    div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
-  }
+  div.prepend($("<img class=\"plus\" src=\"plus.png\">"));
+  div.data("data", value);
+  div.addClass("clickable");
+  div.one("click", function(e) {
+    var div = $(this);
+    var parsed = parseList(div.data("data"));
+    div.children("img").remove();
+    for(var i in parsed) {
+      div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
+    }
+    div.removeClass("clickable");
+  });
   return div;
 }
 
 function parseArray(value, key) {
   var div = $("<div class=\"array\">" + (key ? "<span class=\"key\">" + key + "</span>" : "") + "</div>");
-  var parsed = parseList(value, true);
-  for(var i in parsed) {
-    div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].array);
-  }
+  div.prepend($("<img class=\"plus\" src=\"plus.png\">"));
+  div.data("data", value);
+  div.addClass("clickable");
+  div.one("click", function(e) {
+    var div = $(this);
+    var parsed = parseList(div.data("data"), true);
+    div.children("img").remove();
+    for(var i in parsed) {
+      div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].array);
+    }
+    $(this).removeClass("clickable");
+  });
   return div;
 }
 

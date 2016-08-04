@@ -16,14 +16,17 @@ body, html {
     border: 5px dashed #cccccc;
 }
 
+#viewer {
+	color: #666666;
+}
+
 .dragging-over {
 	border-color: black !important;
 }
 
 div.object, div.array, div.primitive {
-	position: relative;
-	left: 20px;
-	padding-left: 5px;
+	min-height: 20px;
+	padding-left: 10px;
 	border-left: 1px dotted gray;
 	clear: both;
 }
@@ -33,6 +36,21 @@ span.key {
 }
 
 span.value, span.arr_element {
-	padding-left: 20px;
+	padding-left: 10px;
 }
 
+.clickable {
+	font-style: italic;
+	cursor: pointer;
+	color: #000000;
+}
+
+.clickable:hover {
+	background-color: #eeeeee;
+}
+
+.plus {
+	margin: 0 5px;
+	width: 10px;
+	height: 10px;
+}
