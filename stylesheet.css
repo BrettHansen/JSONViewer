@@ -2,12 +2,15 @@ body, html {
 	padding: 0;
 	margin: 0;
 	text-align: left;
+	font-family: Sans-Serif;
 }
 
 #drop {
 	margin: 50px auto;
 	width: 800px;
 	height: 500px;
+	font-size: 36px;
+	color: #444444;
 	text-align: center;
     display: flex;
     justify-content: center;
@@ -21,7 +24,8 @@ body, html {
 }
 
 .dragging-over {
-	border-color: black !important;
+	color: #000000 !important;
+	border-color: #000000 !important;
 }
 
 div.object, div.array, div.primitive {
