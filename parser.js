@@ -57,36 +57,74 @@ function parseList(data, surpressKey) {
 }
 
 function parseObject(value, key) {
-  var div = $("<div class=\"object\">" + (key ? "<span class=\"key\">" + key + "</span>" : "") + "</div>");
-  div.prepend($("<img class=\"plus\" src=\"plus.png\">"));
-  div.data("data", value);
-  div.addClass("clickable");
-  div.one("click", function(e) {
-    var div = $(this);
-    var parsed = parseList(div.data("data"));
-    div.children("img").remove();
-    for(var i in parsed) {
-      div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
+  var div = $("<div class=\"object\"></div>");
+  var head = $("<span class=\"key\">" + (key ? key : "") + "</span>");
+  var content = $("<div class=\"content\"></div>");
+  content.data("data", value);
+  head.prepend($("<img class=\"plus\" src=\"plus.png\">"));
+  head.prepend($("<img class=\"minus\" src=\"minus.png\">").hide());
+  head.data("toggle", true);
+  head.addClass("clickable");
+  head.click(function(e) {
+    var head = $(this);
+    var content = head.next();
+    var toggle = head.data("toggle");
+    head.data("toggle", !toggle);
+    if(toggle) {
+      if(head.data("html-generated")) {
+        content.show();
+      } else {
+        head.data("html-generated", true);
+        var parsed = parseList(content.data("data"), false);
+        for(var i in parsed) {
+          content.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
+        }
+      }
+      head.children(".plus").hide();
+      head.children(".minus").show();
+    } else {
+      content.hide();
+      head.children(".plus").show();
+      head.children(".minus").hide();
     }
-    div.removeClass("clickable");
   });
+  div.append(head, content);
   return div;
 }
 
 function parseArray(value, key) {
-  var div = $("<div class=\"array\">" + (key ? "<span class=\"key\">" + key + "</span>" : "") + "</div>");
-  div.prepend($("<img class=\"plus\" src=\"plus.png\">"));
-  div.data("data", value);
-  div.addClass("clickable");
-  div.one("click", function(e) {
-    var div = $(this);
-    var parsed = parseList(div.data("data"), true);
-    div.children("img").remove();
-    for(var i in parsed) {
-      div.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].array);
+  var div = $("<div class=\"array\"></div>");
+  var head = $("<span class=\"key\">" + (key ? key : "") + "</span>");
+  var content = $("<div class=\"content\"></div>");
+  content.data("data", value);
+  head.prepend($("<img class=\"plus\" src=\"plus.png\">"));
+  head.prepend($("<img class=\"minus\" src=\"minus.png\">").hide());
+  head.data("toggle", true);
+  head.addClass("clickable");
+  head.click(function(e) {
+    var head = $(this);
+    var content = head.next();
+    var toggle = head.data("toggle");
+    head.data("toggle", !toggle);
+    if(toggle) {
+      if(head.data("html-generated")) {
+        content.show();
+      } else {
+        head.data("html-generated", true);
+        var parsed = parseList(content.data("data"), true);
+        for(var i in parsed) {
+          content.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].array);
+        }
+      }
+      head.children(".plus").hide();
+      head.children(".minus").show();
+    } else {
+      content.hide();
+      head.children(".plus").show();
+      head.children(".minus").hide();
     }
-    $(this).removeClass("clickable");
   });
+  div.append(head, content);
   return div;
 }
 

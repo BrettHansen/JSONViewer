@@ -49,7 +49,7 @@ span.value, span.arr_element {
 	background-color: #eeeeee;
 }
 
-.plus {
+.plus, .minus {
 	margin: 0 5px;
 	width: 10px;
 	height: 10px;
