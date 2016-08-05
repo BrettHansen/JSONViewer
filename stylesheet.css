@@ -17,7 +17,7 @@ body, html {
 }
 
 #viewer {
-	color: #666666;
+	color: #444444;
 }
 
 .dragging-over {
@@ -26,17 +26,25 @@ body, html {
 
 div.object, div.array, div.primitive {
 	min-height: 20px;
-	padding-left: 10px;
+	margin-left: 10px;
+	border-radius: 4px;
+}
+
+div.object {
 	border-left: 1px dotted gray;
-	clear: both;
 }
 
-span.key {
-	padding-right: 10px;
+div.array {
+	border-left: 1px solid gray;
 }
 
-span.value, span.arr_element {
-	padding-left: 10px;
+div.primitive {
+}
+
+span {
+	display: inline-block;
+	height: 100%;
+	padding: 0 10px;
 }
 
 .clickable {
@@ -46,11 +54,25 @@ span.value, span.arr_element {
 }
 
 .clickable:hover {
-	background-color: #eeeeee;
+	background-color: #cccccc;
 }
 
 .plus, .minus {
 	margin: 0 5px;
 	width: 10px;
 	height: 10px;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+	padding: 0 10px;
+}
+
+td {
+	padding: 2px 5px;
+}
+
+tr:nth-child(odd) {
+	background: #efefef;
 }

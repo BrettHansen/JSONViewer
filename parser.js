@@ -76,8 +76,14 @@ function parseObject(value, key) {
       } else {
         head.data("html-generated", true);
         var parsed = parseList(content.data("data"), false);
-        for(var i in parsed) {
-          content.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
+        if(isAllPrimitive(parsed)) {
+          var table = makeTable(parsed);
+          console.log(table);
+          content.append(table);
+        } else {
+          for(var i in parsed) {
+            content.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
+          }
         }
       }
       head.children(".plus").hide();
@@ -112,8 +118,12 @@ function parseArray(value, key) {
       } else {
         head.data("html-generated", true);
         var parsed = parseList(content.data("data"), true);
-        for(var i in parsed) {
-          content.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].array);
+        if(isAllPrimitive(parsed)) {
+          content.append(makeTable(parsed));
+        } else {
+          for(var i in parsed) {
+            content.append(parsed[i] instanceof jQuery ? parsed[i] : parsed[i].object);
+          }
         }
       }
       head.children(".plus").hide();
@@ -131,7 +141,8 @@ function parseArray(value, key) {
 function parsePrimitive(value, key) {
   var obj = {
     "key" : key,
-    "value" : value
+    "value" : value,
+    "type" : "primitive"
   }
 
   obj.object = $("<div class=\"primitive\">" +
@@ -141,6 +152,24 @@ function parsePrimitive(value, key) {
   return obj;
 }
 
+function makeTable(items) {
+  var table = $("<table></table>");
+  for(var key in items) {
+    var tr = $("<tr></tr>");
+    tr.append($("<td>" + items[key].key + "</td>"));
+    tr.append($("<td>" + items[key].value + "</td>"));
+    table.append(tr);
+  }
+  return table;
+}
+
 function isObject(obj) {
   return obj === Object(obj);
+}
+
+function isAllPrimitive(arr) {
+  for(var key in arr)
+    if(arr[key].type != "primitive")
+      return false;
+  return true;
 }
